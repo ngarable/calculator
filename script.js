@@ -9,15 +9,45 @@ function clearDisplay(){
 }
 
 function calculate(){
-    try{
-        display.value = eval(display.value);
-    }
-    catch(error){
-        display.value = "error";
-    }
-}
+    const expression = display.value;
 
-const container = document.querySelector('#container');
+    //this expression parses the input eg 5+3 --PAY MORE ATTENTION TO THIS
+    const match = expression.match(/(-?\d+\.?d*)([+\-*/])(-?\d+\.?\d*)/);
+
+    if(!match){
+        display.value ='Invalid Expression';
+        return;
+    }
+
+    //Extract the numbers and the operator
+    const num1 = parseFloat(match[1]);
+    const operator = match[2];
+    const num2 = parseFloat(match[3]);
+
+    let result;
+
+    switch(operator){
+        case '+':
+            result = add(num1, num2);
+            break;
+
+        case '-':
+            result = subtract(num1, num2);
+            break;
+            
+        case '*':
+            result = multiply(num1, num2);
+            break;
+            
+        case '/':
+            result = divide(num1, num2);
+            break;
+            
+        default:
+            result = 'Invalid Operation'    
+    }
+        display.value = result;
+}
 
 
 function add(a, b) {
@@ -29,6 +59,9 @@ function subtract (a, b) {
   };
 
 function divide(a,b){
+    if (b === 0){
+        return "Error: Division by zero"
+    }
     return a / b;
 }  
 
